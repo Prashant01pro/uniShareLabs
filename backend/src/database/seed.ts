@@ -215,7 +215,7 @@ export async function seedDatabase(options: { silent?: boolean } = {}) {
       }
 
       const certCount = config.role === 'STUDENT' ? faker.number.int({ min: 1, max: 2 }) : faker.number.int({ min: 2, max: 4 });
-      const userCerts = faker.helpers.arrayElements(certificationCatalog, certCount).map((c) => ({
+      const userCerts = faker.helpers.arrayElements(certificationCatalog, certCount).map((c: { certCode: string; name: string }) => ({
         certCode: c.certCode,
         name: c.name,
         issuedAt: faker.date.recent({ days: 120 }),
@@ -223,9 +223,9 @@ export async function seedDatabase(options: { silent?: boolean } = {}) {
       }));
 
       const trainings = ['SAFETY-101'];
-      if (userCerts.some((c) => c.certCode.includes('CLEANROOM'))) trainings.push('HAZMAT-101');
-      if (userCerts.some((c) => c.certCode.includes('RADIATION'))) trainings.push('RADIATION-201');
-      if (userCerts.some((c) => c.certCode.includes('CRYO'))) trainings.push('CRYO-101');
+      if (userCerts.some((c: { certCode: string }) => c.certCode.includes('CLEANROOM'))) trainings.push('HAZMAT-101');
+      if (userCerts.some((c: { certCode: string }) => c.certCode.includes('RADIATION'))) trainings.push('RADIATION-201');
+      if (userCerts.some((c: { certCode: string }) => c.certCode.includes('CRYO'))) trainings.push('CRYO-101');
 
       const quotaLimits = {
         STUDENT: 12,
